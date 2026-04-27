@@ -1,21 +1,27 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import pickle
+import joblib
 import matplotlib.pyplot as plt
 import os
 
 # ==============================
-# SAFE FILE PATHS (IMPORTANT FIX)
+# SAFE FILE PATHS
 # ==============================
 BASE_DIR = os.path.dirname(__file__)
 
 model_path = os.path.join(BASE_DIR, "model.pkl")
 scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
 
-# Load model
-model = pickle.load(open(model_path, "rb"))
-scaler = pickle.load(open(scaler_path, "rb"))
+# ==============================
+# LOAD MODEL (JOBLIB - FIXED)
+# ==============================
+try:
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
+except Exception as e:
+    st.error(f"❌ Error loading model files: {e}")
+    st.stop()
 
 # ==============================
 # PAGE CONFIG
